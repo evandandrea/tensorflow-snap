@@ -47,7 +47,7 @@ parts:
       T=$(mktemp -d)
       bash -x bazel-bin/tensorflow/tools/pip_package/build_pip_package $T
       ls -la $T
-      pip install $T/tensorflow-1.3.0-py2-none-any.whl
+      pip install $T/*.whl
   bazel:
     plugin: nil
     stage-packages:
