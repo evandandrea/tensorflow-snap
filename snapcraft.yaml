@@ -1,4 +1,4 @@
-name: tensorflow
+name: tensorflow-ev
 version: 'v1.3.0'
 summary: An open-source software library for Machine Intelligence
 description: |
