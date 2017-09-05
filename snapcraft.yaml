@@ -44,8 +44,10 @@ parts:
       CC_OPT_FLAGS="-march=native" \
         ./configure
       bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
-      bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
-      pip install /tmp/tensorflow_pkg/tensorflow-1.3.0-py2-none-any.whl
+      T=$(mktemp -d)
+      bash -x bazel-bin/tensorflow/tools/pip_package/build_pip_package $T
+      ls -la $T
+      pip install $T/tensorflow-1.3.0-py2-none-any.whl
   bazel:
     plugin: nil
     stage-packages:
