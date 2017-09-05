@@ -22,6 +22,7 @@ parts:
     plugin: python
     python-version: python2
     after: [bazel]
+    build-packages: [wget]
     build: |
       set -e
       export PYTHONUSERBASE=$SNAPCRAFT_PART_INSTALL
