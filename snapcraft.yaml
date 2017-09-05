@@ -22,7 +22,8 @@ parts:
     plugin: python
     python-version: python2
     after: [bazel]
-    build-packages: [wget]
+    build-packages:
+      - wget
     build: |
       set -e
       export PYTHONUSERBASE=$SNAPCRAFT_PART_INSTALL
@@ -33,6 +34,8 @@ parts:
       pip install /tmp/tensorflow_pkg/tensorflow-1.3.0-py2-none-any.whl
   bazel:
     plugin: nil
+    stage-packages:
+      - unzip
     install: |
       BAZEL=bazel-0.5.4-installer-linux-x86_64.sh
       [ -e $BAZEL ] || wget https://github.com/bazelbuild/bazel/releases/download/0.5.4/$BAZEL
