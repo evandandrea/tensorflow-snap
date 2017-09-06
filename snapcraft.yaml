@@ -16,22 +16,25 @@ description: |
 grade: devel
 confinement: devmode
 
+apps:
+  python:
+    command: python
+
 parts:
   tensorflow:
     source: https://github.com/tensorflow/tensorflow/archive/$SNAPCRAFT_PROJECT_VERSION.tar.gz
     plugin: python
     python-version: python2
+    python-packages:
+      - six
+      - numpy
     after: [bazel]
     build-packages:
       - wget
-    build: |
+    install: |
       set -e
-      export PYTHONUSERBASE=$SNAPCRAFT_PART_INSTALL
-      export PYTHONPATH=$SNAPCRAFT_PART_INSTALL/usr/lib/python2.7/site-packages
-      pip install six numpy wheel
-
       PYTHON_BIN_PATH="$SNAPCRAFT_PART_INSTALL/usr/bin/python" \
-      PYTHON_LIB_PATH="$SNAPCRAFT_PART_INSTALL/usr/lib/python2.7/dist-packages" \
+      PYTHON_LIB_PATH="$SNAPCRAFT_PART_INSTALL/lib/python2.7/site-packages" \
       TF_NEED_MKL=0 \
       TF_NEED_JEMALLOC=1 \
       TF_NEED_GCP=0 \
@@ -45,9 +48,8 @@ parts:
         ./configure
       bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
       T=$(mktemp -d)
-      bash -x bazel-bin/tensorflow/tools/pip_package/build_pip_package $T
-      ls -la $T
-      pip install $T/*.whl
+      bazel-bin/tensorflow/tools/pip_package/build_pip_package $T
+      $SNAPCRAFT_PART_INSTALL/usr/bin/python -m pip install --prefix=$SNAPCRAFT_PART_INSTALL --no-compile $T/*.whl
   bazel:
     plugin: nil
     stage-packages:
