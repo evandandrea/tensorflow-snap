@@ -59,3 +59,6 @@ parts:
       [ -e $BAZEL ] || wget https://github.com/bazelbuild/bazel/releases/download/0.5.4/$BAZEL
       chmod +x $BAZEL
       ./$BAZEL --prefix=$SNAPCRAFT_PART_INSTALL
+    prime:
+      # Only use bazel for building. Do not include it in the final snap.
+      - -*
